@@ -1,0 +1,115 @@
+.menu-btn {
+    position: absolute;
+    z-index: 1;
+    right: 1rem;
+    top: 1rem;
+    height: 20px;
+    width: 28px;
+    cursor: pointer;
+    @include transition-ease;
+
+    &_burger { /* middle line of menu 'burger' */
+        position: absolute;
+        right: 0;
+        top: 0.5rem;
+        width: 28px;
+        height: 3px;
+        background: set-text-color($primary-color);
+        @include transition-ease;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: -8px; /* move up 8px from initial (above^) position*/
+            width: 28px; 
+            height: 3px;
+            background: set-text-color($primary-color);
+            @include transition-ease;
+        }
+        &::after {
+            content: '';
+            position: absolute;
+            top: 8px;
+            width: 20px; /* slightly shorter... for asthetics? */
+            height: 3px;
+            background: set-text-color($primary-color);
+            @include transition-ease;
+        }
+
+        &.open {
+            transform: rotate(720deg); /* rotates whole of _burger element */
+            background: transparent; /* sets middle bar to transparent*/
+        
+            &::before { /* to rotate before line to make it one arm of the cross) */
+                transform: rotate(45deg) translate(5px, 8px);
+            }
+
+            &::after { /* same as above but for the bottom line, opposite angle*/
+                width: 28px;
+                transform: rotate(-45deg) translate(3px, -7px);
+            }
+        }
+    }
+}
+
+.nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    opacity: 0.98;
+    visibility: hidden;
+
+    &.open {
+        visibility: visible;
+    }
+
+    .menu-nav {
+        display: flex;
+        flex-flow: column wrap;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        overflow: hidden;
+        background: $primary-color;
+        list-style-type: none;
+        padding-right: 1rem;
+        transform: translateY(-100%); /* along the X axis (width) or Y axis (height) 100% off page until click .open below */
+        @include transition-ease;
+
+        &.open {
+            transform: translateY(0); /* brings off screen menu, onscreen */
+        }
+
+        &_item {
+            transform: translateX(100vw);
+            @include transition-ease;
+
+            &.open {
+                transform: translateX(0);
+            }
+
+            &.active > a {
+                color: $secondary-color;
+            }
+        }
+    &_link {
+        display: inline-block;
+        font-size: 2rem;
+        text-transform: uppercase;
+        padding: 2rem 0;
+        font-weight: 300;
+        @include transition-ease;
+
+        &:hover {
+            color: $secondary-color;
+        }
+    }
+    }
+}
+
+@for $i from 1 through 4 { /* because we have four links */
+    .menu-nav_item:nth-child(#{$i}) {
+        transition-delay: ($i * 0.2s) + 0.15s;
+    }
+}
